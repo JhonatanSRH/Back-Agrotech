@@ -2,7 +2,10 @@
 agrotech settings.
 """
 
+import os
+
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -13,9 +16,11 @@ SECRET_KEY = '5ktyi15zhb$*+8)!06!($y_#qkeqi)qjn=*01csv48y0owu(*2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'agrotech-285917.appspot.com', 'agrotech-285917.uc.r.appspot.com']
 
+GOOGLE_ID_PROJECT = 'agrotech-285917'
 
+LOCATION = 'us-central1'
 # Application definition
 
 DJANGO_APPS = [
@@ -28,8 +33,12 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'corsheaders',
+    'oauth2_provider',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_social_oauth2',
+    'social_django',
 ]
 
 LOCAL_APPS = [
@@ -41,6 +50,8 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +59,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 ROOT_URLCONF = 'agrotech.urls'
@@ -63,14 +85,16 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
+
+
 WSGI_APPLICATION = 'agrotech.wsgi.application'
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -81,6 +105,11 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+
+AUTHENTICATION_BACKENDS = (
+   'rest_framework_social_oauth2.backends.DjangoOAuth2',
+   'django.contrib.auth.backends.ModelBackend',
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -97,6 +126,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
+    ),
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
