@@ -8,13 +8,13 @@ from django.contrib import admin
 from rest_framework import routers
 
 #Views
-from apps.users.views import UsersViewSet
+from apps.users.views import UserViewSet
 
 
 router = routers.DefaultRouter()
-router.register('users', UsersViewSet)
+router.register('users', UserViewSet)
 
 
 urlpatterns = [
-    path('users/', include(router.urls), name='users'),
+    path('', include(router.urls), name="user"),
 ]

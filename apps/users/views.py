@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from apps.users.serializers import UserSerializer
 
 
-class UsersViewSet(viewsets.ViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     """User viewset"""
 
     authentication_classes = [SessionAuthentication]

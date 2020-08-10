@@ -5,7 +5,16 @@ agrotech settings.
 import os
 
 from pathlib import Path
+import pymysql
+import firebase_admin
+from firebase_admin import credentials
 
+
+cred = credentials.Certificate("agrotech/agrotech-firebase-adminsdk.json")
+firebase_admin.initialize_app(cred)
+
+pymysql.version_info = (1, 4, 0, "final", 0)
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -92,16 +101,31 @@ TEMPLATES = [
     },
 ]
 
-
+PRE_FIRESTORE = ''
 
 WSGI_APPLICATION = 'agrotech.wsgi.application'
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
+if os.getenv('GAE_APPLICATION', '').startswith('standard'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/agrotech-285917:us-central1:db-agrotech',
+            'USER': 'root',
+            'PASSWORD': 'LMrMugqmgiFNwEML',
+            'NAME': 'db-agrotech',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '104.154.88.191',
+            'PORT': '3306',
+            'NAME': 'agrotech',
+            'USER': 'root',
+            'PASSWORD': 'LMrMugqmgiFNwEML',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
