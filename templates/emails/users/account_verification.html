@@ -1,0 +1,13 @@
+{{% csrf_token %}}
+<p>Bienvenido @{{ user.username }}!</p>
+
+<p>
+    Para acceder a usar AgroTech debes completar un paso.
+    Visita el siguiente <a href="">link</a> e ingresa este código.
+</p>
+
+<p style="text-align:center">
+    <code style="text-align:center">
+        {{ token }}
+    </code>
+</p>

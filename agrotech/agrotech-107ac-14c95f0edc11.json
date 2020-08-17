@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "agrotech-107ac",
+  "private_key_id": "14c95f0edc116a787f4382cc23b2f37bf728f0bf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDHEV1zrhQSulu2\nY1KfdLRrv3YWazCGF/CDkwThjzNvRNkq8wQ33Cz4eJpDnEt3WT6orYpdwuQzDqQA\nMKMZukQ31u4IN+BKz25kef6DDhAx6a2NdrRVhloLu2sDq/7ZQfeHC2tMXJQUUwAh\n+Sb8KadqBrBxpjOG2RlVevrINBtETzZVESX5MISNoqFl6hR0fku8A5Hyolebvid8\nmifDmqBxhHmu8pvEC6Wiy8kqaDtdLn3ws5dJPYBXVgRgj8YFYNvlxSCh9IdKx3jn\nsxipblSXCNhU7edQAYBCXZ0MnmzN9opk1ZcPvM7j/iCsZDWOZ4c9Kytt58+anfr1\nTa/95rBlAgMBAAECggEAVseNpyOwcXeXCnvi5UtRaZU169D/fr1J5nm9S30LLYrk\nZvI4mQdc/VZJ3YZxaY5Yn9zDMFuI8m8D9Gc/erQ2D+ecra16E/K4S4nY9xW23qNh\nOoWQWKYwc+PYY2njt58nwlGqjUfgb7m9GZJNOekIp9JRscGDvdm/TwHE+GiqqExg\nOKyEgBzUDgMsT4A8Ir4YKCSGUBVBmaNopZo0/TgPUS4+YIwrgcDrie8axCC19Orr\nS0u8p2Kg8UwkNCF29UbAQefROzQUp1KBVNmSUzg/+BrcwVDhe5KHB5f/swoJAkD6\nIQ/5x8wWhI3Mi0VgbmODPLP3LRiWTIH9gYsjEmoM0wKBgQD1y+zybluj3nfTgjCJ\nTgiNaud8AcubI31u0I0vuN4xGZ6N738akt8oL4fBdCoq4cT1epIiPRLB6Xj4Vnsm\nThagmYpcx0rzwDeCPhofdX128UZ7H51kBvO1NIiyF3PCYmb/QZRymP89V7QG1X8E\nBJlPO5DQ3zgZGibCZU7Jerm9vwKBgQDPVNqo+7pNsidNX/++gztDT/85V9lsOVcf\n87ABnM6TSohoUe8rYtIXxEFAI6Ngb7hCT7mqv1F7av2nl9Fh+antFW9N6PXy58YM\nYTuKJsk6FPiHGPUbhaCiWXINhdseFMAhAy77DxS3cO4NX+YvsvG16g17DW1jL22J\n9LGWWbIi2wKBgQDFsVIPnxFX2KvZ00GEfd3FGHG8vJjtW3sccOLNukwDg86R7En3\nrp+L68atoufze4j1w7LblPGMQ2NHog8EvRPX8gZmHui66iP7PkW2fcH+s4pzpvbp\nJ+pGGU3Ep7Y0Zv7eWPmzvji0NuEWCgtRyP0hzA/q3054ah84hVD8HhhccwKBgFpg\nitCOqq+jsS4xYrIRUowNGxxMByL9+9SZzWdmi0X5f2y6Cp/G+/4QNsFWx6kKCjAd\nwLmFnGdIRDoCG+uxgTkv1s0Hd+7iyZor6GBYd+8xpQR/BJlyrosWonjymImMUhQR\n5zDZahZsy9hYrWatgl/iHu489CoASqeQWrlHcDdxAoGATtM3EpYt+2mFbkVe/pQR\n1zPcwYyL2XYT3HUfqgU0OMv600SrfINLNhe1VHwAbLdlkf5m5C31ZdAskxNQ/zZb\nD07L7mrkpmZGWEIGivTr4ZHWpmZSJwz81zct9+Hmo/qZcRsBUN7tTl9SWLQDrPFP\n6VrEaBAp3oJjC111uIxCxis=\n-----END PRIVATE KEY-----\n",
+  "client_email": "agrotech-107ac@appspot.gserviceaccount.com",
+  "client_id": "104276841419344540368",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/agrotech-107ac%40appspot.gserviceaccount.com"
+}

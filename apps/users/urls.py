@@ -2,7 +2,6 @@
 
 #Django
 from django.urls import include, path
-from django.contrib import admin
 
 #Django REST framework
 from rest_framework import routers
@@ -12,9 +11,8 @@ from apps.users.views import UserViewSet
 
 
 router = routers.DefaultRouter()
-router.register('users', UserViewSet)
-
+router.register(r'users', UserViewSet, basename='users')
 
 urlpatterns = [
-    path('', include(router.urls), name="user"),
+    path('', include(router.urls))
 ]
