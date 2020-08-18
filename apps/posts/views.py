@@ -8,15 +8,14 @@ import logging as log
 
 #Django REST framework
 from rest_framework import status
+from rest_framework.parsers import FileUploadParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 #Models
 from apps.posts.models import PostCultivo, UserPost, ActividadesCultivo, ProductoCultivo
+from utils.image_manager import upload_blob
 
-
-import firebase_admin
-from firebase_admin import firestore, credentials
 
 class PostCultivoView(APIView):
     """PostCultivoView"""
@@ -121,28 +120,28 @@ class PostView(APIView):
         return Response(model_fb_upost.get(), status=status.HTTP_201_CREATED)
 
     def get(self, request):
-        self.__request = request.query_params
-        model_fb_upost = UserPost()
-        model_fb_upost.__tablename__ = model_fb_upost.ruta_raiz
-        self.__filtros.clear()
-        if 'usuario' in self.__request:
-            self.__filtros += [('id_usuario', '==', int(self.__request['usuario']))]
-        if 'cultivo' in self.__request:
-            self.__filtros += [('id_cultivo', '==', int(self.__request['cultivo']))]
-        if len(self.__filtros) > 0:
-            self.data = model_fb_upost.get(filters=self.__filtros)
-        else:
-            self.data = model_fb_upost.get()
-        if 'username' in self.__request:
-            data_aux = []
-            for dict_dato in self.data:
-                print(dict_dato['username'], self.__request['username'])
-                if dict_dato['username'].lower() == self.__request['username'].lower():
-                    data_aux.append(dict_dato)
-            self.data = data_aux
-        if None in self.data:
-            return Response({"message": "Aún no se ha registrado ningun post."}, status=status.HTTP_404_NOT_FOUND)
-        return Response(self.data, status=status.HTTP_200_OK)
+        try:
+            self.__request = request.query_params
+            model_fb_upost = UserPost()
+            model_fb_upost.__tablename__ = model_fb_upost.ruta_raiz
+            self.__filtros.clear()
+            if 'cultivo' in self.__request:
+                self.__filtros += [('id_cultivo', '==', int(self.__request['cultivo']))]
+            if len(self.__filtros) > 0:
+                self.data = model_fb_upost.get(filters=self.__filtros)
+            else:
+                self.data = model_fb_upost.get()
+            if 'username' in self.__request:
+                data_aux = []
+                for dict_dato in self.data:
+                    if dict_dato['username'].lower() == self.__request['username'].lower():
+                        data_aux.append(dict_dato)
+                self.data = data_aux
+            if None in self.data:
+                return Response({"message": "Aún no se ha registrado ningun post."}, status=status.HTTP_404_NOT_FOUND)
+            return Response(self.data, status=status.HTTP_200_OK)
+        except KeyError as error:
+            return Response({"message": "Datos erroneos." + str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
         try:
@@ -156,13 +155,28 @@ class PostView(APIView):
             self.eliminar_subcoleccion(ProductoCultivo)
             model_fb_upost.delete()
             return Response({"message": "Eliminado."} ,status=status.HTTP_204_NO_CONTENT)
-        except Exception as error:
-            log.error(error)
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print("Error en el post ",exc_type, fname, exc_tb.tb_lineno)
+        except KeyError as error:
             return Response({"message": "Datos erroneos." + str(error)}, status=status.HTTP_400_BAD_REQUEST)
 
     def eliminar_subcoleccion(self, model):
         model.__tablename__ =  model.ruta_raiz.format(self.__request['post'])
         model.delete_all_documents()
+
+class ImageManagerView(APIView):
+
+    parser_classes = [FileUploadParser]
+
+    def post(self, request):
+        try:
+            upload_blob(request.data['image'],request.data['name'])
+            return Response(status=status.HTTP_201_CREATED)
+        except Exception as error:
+            return Response({"message": str(error)} ,status=status.HTTP_201_CREATED)
+
+    def put(self, request, filename, format=None):
+        try:
+            file_obj = request.FILES
+            print(file_obj)
+            return Response(status=204)
+        except Exception as error:
+            return Response({"message": str(error)} ,status=status.HTTP_500_INTERNAL_SERVER_ERROR)

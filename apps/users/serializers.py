@@ -6,7 +6,9 @@ from rest_framework import serializers
 # Django
 from django.conf import settings
 from django.contrib.auth import password_validation, authenticate
+from django.core.mail import EmailMultiAlternatives
 from django.core.validators import RegexValidator
+from django.template.loader import render_to_string
 
 # Django REST Framework
 from rest_framework import serializers
@@ -18,7 +20,6 @@ from apps.users.models import User, Profile
 
 # Utilities
 import jwt
-from utils.email import send_confirmation_email
 
 
 class ProfileModelSerializer(serializers.ModelSerializer):
@@ -31,14 +32,12 @@ class ProfileModelSerializer(serializers.ModelSerializer):
         fields = (
             'picture',
             'biography',
-            'rides_taken',
-            'rides_offered',
-            'reputation'
+            'posts',
+            'comments'
         )
         read_only_fields = (
-            'rides_taken',
-            'rides_offered',
-            'reputation'
+            'posts',
+            'comments'
         )
 
 
@@ -98,10 +97,39 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, data):
         """Crea el usuario y el perfil."""
         data.pop('password_confirmation')
-        user = User.objects.create_user(**data, is_verified=False)
+        user = User.objects.create_user(**data, is_verified=True)
         Profile.objects.create(user=user)
-        send_confirmation_email(user_pk=user.pk)
         return user
+
+    def gen_verification_token(user):
+        """Create JWT token that the user can use to verify its account."""
+        exp_date = timezone.now() + timedelta(days=3)
+        payload = {
+            'user': user.username,
+            'exp': int(exp_date.timestamp()),
+            'type': 'email_confirmation'
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+        return token.decode()
+
+    def send_confirmation_email(self, user_pk):
+        try:
+            user = User.objects.get(pk=user_pk)
+            verification_token = self.gen_verification_token(user)
+            subject = 'Bienvenido @{}! Debes verificar tu cuenta para empezar a usar AgroTech.'.format(user.username)
+            from_email = 'AgroTech <noreply@agrotech.com>'
+            print(user)
+            content = {'token': verification_token, 'user': user}
+            """
+            content = render_to_string(
+                'emails/users/account_verification.html',
+                {'token': verification_token, 'user': "pacheco"}
+            )"""
+            msg = EmailMultiAlternatives(subject, content, from_email, [user.email])
+            #msg.attach_alternative(content, "text/html")
+            msg.send()
+        except Exception as error:
+            print(error)
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -119,6 +147,7 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('La cuenta aún no se ha activado')
         self.context['user'] = user
         return data
+
 
     def create(self, data):
         """Generate or retrieve new token."""

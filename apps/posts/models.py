@@ -12,8 +12,7 @@ class UserPost(FunctionsFirebase):
     """UserPost firebase."""
 
     ruta_raiz = "posts"
-    id_usuario = fields.IntegerField()
-    username = fields.CharField()
+    username = fields.CharField(max_length=20)
     fecha_post = fields.DatetimeField(auto_now=True)
     likes = fields.IntegerField(default=0)
     comentarios = fields.IntegerField(default=0)

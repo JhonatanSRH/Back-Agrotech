@@ -8,13 +8,13 @@ from pathlib import Path
 import pymysql
 
 import firebase_admin
+#from google.cloud import storage
 from firebase_admin import credentials
 
-#cred = credentials.Certificate('agrotech/agrotech-107ac-14c95f0edc11.json')
-cred = credentials.ApplicationDefault()
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://agrotech-107ac.firebaseio.com'
-})
+cred = credentials.Certificate('agrotech/agrotech-107ac-14c95f0edc11.json')
+#cred = credentials.ApplicationDefault()
+firebase_admin.initialize_app(cred)
+#storage_client = storage.Client()
 
 pymysql.version_info = (1, 4, 0, "final", 0)
 pymysql.install_as_MySQLdb()
@@ -33,11 +33,11 @@ AUTH_USER_MODEL = 'users.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'agrotech-285917.appspot.com', 'agrotech-285917.uc.r.appspot.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'agrotech-107ac.rj.r.appspot.com']
 
-GOOGLE_ID_PROJECT = 'agrotech-285917'
+GOOGLE_ID_PROJECT = 'agrotech-107ac'
 
-LOCATION = 'us-central1'
+LOCATION = 'southamerica-east1'
 # Application definition
 
 DJANGO_APPS = [
@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'oauth2_provider',
+    'anymail',
     #'rest_framework_social_oauth2',
     #'social_django',
 ]
@@ -95,6 +96,8 @@ CORS_ALLOW_METHODS = [
 ]
 
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 1025
 
 ROOT_URLCONF = 'agrotech.urls'
 
